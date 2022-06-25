@@ -25,10 +25,12 @@ const main = async () => {
     const dinnerHTML: any = document.querySelectorAll(
       "tbody > tr:nth-child(6)"
     );
-    const daysHTML: any = document.querySelectorAll("p > strong > strong");
+    const daysHTML: any = document.querySelectorAll("p > strong");
+
+    const availableTables = 
 
     //const days = [daysHTML[0].innerText, daysHTML[1].innerText];
-    const days = [daysHTML[0].innerText];
+    const days = [daysHTML[1].innerText];
 
     const titles = days.map((_, index) => {
       return {
@@ -46,58 +48,70 @@ const main = async () => {
       };
     });
 
-    const splitted = menus[0].lunch
-      .split("\n")
-      .map((meal: string) => meal.trim());
-    console.log(splitted);
+    //const splitted = menus[0].lunch
+    //.toString()
+    //.split("\n")
+    //.map((meal: string) => meal.trim());
+    //console.log(splitted);
 
-    const fig = document.querySelector("p + figure")?.childNodes;
-    console.log(fig);
-    return fig;
-    //let menuResponse = [];
+    let menuResponse = [];
+    //if (
+    //document.querySelector("p + figure")?.children.toString() ===
+    //"[object HTMLTableElement]"
+    //) {
 
-    //if (breakfastHTML.length === 2) {
-    //menuResponse = days.map((_, index) => {
-    //return {
-    //weekDay: days[index],
-    //breakfast: {
-    //title: titles[index].breakfast,
-    //menu: menus[index].breakfast,
-    //},
-    //lunch: {
-    //title: titles[index].lunch,
-    //menu: menus[index].lunch,
-    //},
-    //dinner: {
-    //title: titles[index].dinner,
-    //menu: menus[index].dinner,
-    //},
-    //};
-    //});
-    //} else {
-    //// Checks if the first menu day has a table withe the menu
-    //if (document.querySelector("p + figure")?.children[0] === table);
     //}
 
-    //return menuResponse;
+    if (breakfastHTML.length === 2) {
+      menuResponse = days.map((_, index) => {
+        return {
+          weekDay: days[index],
+          breakfast: {
+            title: titles[index].breakfast,
+            menu: menus[index].breakfast,
+          },
+          lunch: {
+            title: titles[index].lunch,
+            menu: menus[index].lunch,
+          },
+          dinner: {
+            title: titles[index].dinner,
+            menu: menus[index].dinner,
+          },
+        };
+      });
+    } else {
+      let dayIndex: number;
 
-    return {
-      day1: {
-        weekDay: days[0],
-        breakfast: {
-          title: titles[0],
-          menu: menus[0],
+      // Checks if the first menu day has a table withe the menu
+      if (
+        document.querySelector("p + figure")?.children.toString() ===
+        "[object HTMLTableElement]"
+      ) {
+        dayIndex = 0;
+      } else {
+        dayIndex = 1;
+      }
+      menuResponse = [
+        {
+          weekDay: days[dayIndex],
+          breakfast: {
+            title: titles[dayIndex].breakfast,
+            menu: menus[dayIndex].breakfast,
+          },
+          lunch: {
+            title: titles[dayIndex].lunch,
+            menu: menus[dayIndex].lunch,
+          },
+          dinner: {
+            title: titles[dayIndex].dinner,
+            menu: menus[dayIndex].dinner,
+          },
         },
-        lunch: {
-          title: titles[1],
-          menu: menus[1],
-        },
-        dinner: {
-          title: titles[2],
-          menu: menus[2],
-        },
-      },
-    };
+      ];
+    }
+
+    return menuResponse;
   });
 
   console.log(response);
